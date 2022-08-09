@@ -1,15 +1,16 @@
 import {useEffect, useState} from "react";
 
-const GetIP = () => {
+const GetIP = ({ protocol }) => {
     const [ipAddr, setIpAddr] = useState(null);
     useEffect(() => {
         const makeRequest = async () => {
-            const rawData = await fetch('https://api.ipify.org?format=json  ');
+            const url = protocol === 'ipv6' ? 'https://api64.ipify.org?format=json' : 'https://api.ipify.org?format=json';
+            const rawData = await fetch(url);
             const parsedData = await rawData.json();
             setIpAddr(parsedData.ip);
         }
-        makeRequest();
-    }, []);
+        makeRequest().then();
+    }, [protocol]);
     return (
         <>
             Your IP Address is { ipAddr }
